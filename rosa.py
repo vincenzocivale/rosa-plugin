@@ -5,16 +5,10 @@ from datetime import datetime, date
 import roslibpy
 
 # System parametres
-
-
-
 host_ip = "localhost"
 port = 9090
 
 ros_client = roslibpy.Ros(host=host_ip, port=port)
-
-
-ros_client = None
 
 class ROSVersion(Enum):
     a: str = 'ROS1'
@@ -53,23 +47,24 @@ def disconnect_ros_client(cat):
     ros_client.terminate()
     return "Disconnected from ROS server"
 
-@tool(examples=["I would like to verfiy the connection to the ROS server"])
-def verify_connection(cat):
-    "Verify the connection to the ROS server"
+@tool(examples=["I would like to get the list of topics"])
+def get_topics(cat):
+    "Get the list of topics available in the ROS server"
     global ros_client
-    connection_status = ros_client.is_connected
+    topics = ros_client.get_topics()
+    topics_string = "\n".join(topics)
+    response = f"The topics available in the ROS server are: \n{topics_string}"
 
-    if connection_status:
-        response = "The connection to the ROS server is successful!"
-    else:
-        response = "Failed to connect to the ROS server. Please check your settings."
+# @tool(examples=["I would like to verfiy the connection to the ROS server"])
+# def verify_connection(cat):
+#     "Verify the connection to the ROS server"
+#     global ros_client
+#     connection_status = ros_client.is_connected
 
-    # Use the cat instance to send the response
-    cat.send_message(response)
+#     if connection_status:
+#         response = "The connection to the ROS server is successful!"
+#     else:
+#         response = "Failed to connect to the ROS server. Please check your settings."
 
-
-
-
-
-
-
+#     # Use the cat instance to send the response
+#     cat.send_message(response)
