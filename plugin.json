@@ -1,9 +1,9 @@
 {
     "name": "Rosa (Robotic Operating System Agent)",
     "version": "0.0.1",
-    "description": "Description of rosa_(robotic_operating_system_agent).",
-    "author_name": "Me",
-    "author_url": "https://mywebsite.me",
+    "description": "A plugin for Cheshire-ai that enables natural language control of ROS (Robot Operating System) systems through Large Language Models. Inspired by NASA-JPL's ROSA project, this plugin facilitates seamless interaction between LLMs and ROS-based robots and systems.",
+    "author_name": "Vincenzo yuto Civale",
+    "author_url": "https://github.com/vincenzocivale",
     "plugin_url": "https://github.com/my_name/rosa_(robotic_operating_system_agent)",
     "tags": "cat, template, example",
     "thumb": "https://raw.githubusercontent.com/my_repo_path/rosa_(robotic_operating_system_agent).png"

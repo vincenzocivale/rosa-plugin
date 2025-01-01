@@ -2,11 +2,13 @@ from cat.mad_hatter.decorators import tool, hook, plugin
 from pydantic import BaseModel
 from enum import Enum
 from datetime import datetime, date
+import time
 import roslibpy
 
 # System parametres
 host_ip = "localhost"
 port = 9090
+timeout = 10
 
 ros_client = roslibpy.Ros(host=host_ip, port=port)
 
@@ -15,7 +17,7 @@ class ROSVersion(Enum):
     b: str = 'ROS2'
 
 class PluginSettings(BaseModel):
-    host_ip: str
+    host_ip: str = "localhost"
     port: int = 9090
     ros_version: ROSVersion = ROSVersion.a
 
@@ -37,8 +39,17 @@ def agent_prompt_prefix(prefix, cat):
 def inizialize_ros_client(cat):
     "Inizialize the ROS client to control the robot"
     global ros_client
+    cat.send_ws_message(msg_type='chat', content=f"Connecting to ROS server at {host_ip}:{port}")
     ros_client.run()
-    return "Connected to ROS server"
+    start_time = time.time()
+    while not ros_client.is_connected:
+        if time.time() - start_time > timeout:
+            ros_client.close()
+            cat.send_ws_message(msg_type='chat', content=f"Connection timeout after {timeout} seconds")
+            return False 
+        time.sleep(0.1)
+    cat.send_ws_message(msg_type='chat', content=f"Successfully connected to ROS server at {host_ip}:{port}")
+    return True
 
 @tool(examples=["I would like to disconnect from the ROS server"])
 def disconnect_ros_client(cat):
