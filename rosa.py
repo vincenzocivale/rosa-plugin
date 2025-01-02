@@ -35,22 +35,6 @@ def agent_prompt_prefix(prefix, cat):
     return prefix
 
 
-@tool(examples=["I would like to connect to a ROS server"])
-def inizialize_ros_client(cat):
-    "Inizialize the ROS client to control the robot"
-    global ros_client
-    cat.send_ws_message(msg_type='chat', content=f"Connecting to ROS server at {host_ip}:{port}")
-    ros_client.run()
-    start_time = time.time()
-    while not ros_client.is_connected:
-        if time.time() - start_time > timeout:
-            ros_client.close()
-            cat.send_ws_message(msg_type='chat', content=f"Connection timeout after {timeout} seconds")
-            return False 
-        time.sleep(0.1)
-    cat.send_ws_message(msg_type='chat', content=f"Successfully connected to ROS server at {host_ip}:{port}")
-    return True
-
 @tool(examples=["I would like to disconnect from the ROS server"])
 def disconnect_ros_client(cat):
     "Disconnect the ROS client from the robot"
@@ -58,13 +42,7 @@ def disconnect_ros_client(cat):
     ros_client.terminate()
     return "Disconnected from ROS server"
 
-@tool(examples=["I would like to get the list of topics"])
-def get_topics(cat):
-    "Get the list of topics available in the ROS server"
-    global ros_client
-    topics = ros_client.get_topics()
-    topics_string = "\n".join(topics)
-    response = f"The topics available in the ROS server are: \n{topics_string}"
+
 
 # @tool(examples=["I would like to verfiy the connection to the ROS server"])
 # def verify_connection(cat):
@@ -79,3 +57,32 @@ def get_topics(cat):
 
 #     # Use the cat instance to send the response
 #     cat.send_message(response)
+
+# @tool(examples=["I would like to connect to a ROS server"])
+# def inizialize_ros_client(tool_input, cat):
+#     """
+#     Tool for establishing a connection with a ROS (Robot Operating System) server.
+    
+#     This tool should be used when:
+#     - An initial connection needs to be established with a robot or robotic system
+#     - The user mentions the need to communicate or interact with ROS
+#     - There's a request to control or command a robot
+#     - References are made to "ROS connection", "ROS server", or "robot control"
+#     - A robotic control session needs to be initiated
+#     - A communication bridge with a ROS system needs to be established
+#     - Keywords like "connect to robot", "start ROS", or "initialize robot connection" are mentioned
+    
+#     """
+
+#     ros_client = roslibpy.Ros(host="localhost", port=9090)
+#     cat.send_ws_message(msg_type='chat', content=f"Connecting to ROS server at localhost:")
+#     ros_client.run()
+#     start_time = time.time()
+#     while not ros_client.is_connected:
+#         if time.time() - start_time > timeout:
+#             ros_client.close()
+#             cat.send_ws_message(msg_type='chat', content=f"Connection timeout after {timeout} seconds")
+#             return False 
+#         time.sleep(0.1)
+#     cat.send_ws_message(msg_type='chat', content=f"Successfully connected to ROS server at {host_ip}:{port}")
+#     return True
