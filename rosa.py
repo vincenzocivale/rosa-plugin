@@ -5,12 +5,6 @@ from datetime import datetime, date
 import time
 import roslibpy
 
-# System parametres
-host_ip = "localhost"
-port = 9090
-timeout = 10
-
-ros_client = roslibpy.Ros(host=host_ip, port=port)
 
 class ROSVersion(Enum):
     a: str = 'ROS1'
