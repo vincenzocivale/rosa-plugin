@@ -23,8 +23,12 @@ def check_connection(tool_input, cat):
             response = f"Connected to ROS server at {host}:{port}"
             log.info(response)
         else:
-            response = f"Not connected to ROS server at {host}:{port}.\nPlease check your settings or verify the connection."
+            response = (
+                            f"Error: Unable to connect to the ROS server at {host}:{port}.\n"
+                            "Please verify your settings and ensure the connection is properly established."
+                        )
             log.warning(response)
+            
     except Exception as e:
         response = f"Failed to connect to ROS server at {host}:{port}.\nError: {str(e)}"
         log.error(response)
