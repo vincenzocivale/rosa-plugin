@@ -100,9 +100,3 @@ def query_wolfram_alpha(tool_input, cat):
         error_message = f"Wolfram Alpha Cat: An error occurred: {str(e)}"
         log.error(error_message)
         return error_message
-    
-
-
-This commit introduces the `wolfram_alpha_client.py` module plugin available at https://github.com/pazoff/wolfram-alpha-cat.git.
-
-The module implements code to solve mathematical operations using the Wolfram Alpha API. It provides functions to query Wolfram Alpha and parse its responses, enabling the integration of advanced mathematical computation capabilities into plugin.
