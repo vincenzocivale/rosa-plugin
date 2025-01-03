@@ -14,7 +14,7 @@ class PluginSettings(BaseModel):
     host_ip: str = "localhost"
     port: int = 9090
     ros_version: ROSVersion = ROSVersion.a
-    wolfram_alpha_api_key: str 
+    wolfram_alpha_api_key: str = "None"
 
 
 @plugin
