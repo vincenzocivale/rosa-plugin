@@ -1,21 +1,36 @@
-from cat.mad_hatter.decorators import tool
-from cat.log import log
-import roslibpy
-import connection_manager as cm
+# from cat.mad_hatter.decorators import tool
+# from cat.log import log
+# import roslibpy
+# import connection_manager as cm
 
-@tool
-def subscribe_to_topic(tool_input, cat):
-    """
-    Subscribe to a topic in the ROS server
-    
-    tool_input represents the topic name to subscribe and the type of the topic, divided by a comma.
-    
-    """
-    topic_name, topic_type = tool_input.split(",")
-    ros_client, host, port = cm.initialize_connection(cat)
-    ros_client.run()
-    topic = roslibpy.Topic(ros_client, topic_name, topic_type)
-    topic.subscribe(lambda message: log.info(f"Received message: {message['data']}"))
-    response = f"Subscribed to topic {topic_name}."
-    return response
+
+
+# class ROSTopic(BaseModel): #
+#     topic_name: str
+#     topic_type: str
+
+
+# @form
+# class TopicSubscriptionForm(CatForm): #
+
+#     description = "Form to subscribe to ros topic" 
+#     model_class = ROSTopic 
+#     start_examples = [ #
+#         "Submit to a ROS topic"
+#     ]
+#     stop_examples = [ #
+#         "stop pizza order",
+#         "not hungry anymore",
+#     ]
+#     ask_confirm = True #
+
+#     def submit(self, form_data): #
+#         ros_client, host, port = cm.initialize_connection(cat)
+#         ros_client.run()
+#         topic = roslibpy.Topic(ros_client, topic_name, topic_type)
+
+#         return {
+#             "output": f"Pizza order on its way: {form_data}. Estimated time: {time}"
+#         }
+
 
