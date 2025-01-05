@@ -61,13 +61,13 @@ def change_ros_server_ip(tool_input, cat):
     log.info(response)
     return response
 
-@tool(return_direct=True, example=["I want to subscribe to a topic in ROS. The topic is /client_count and the type is std_msgs/msg/Int32. Please subscribe to it."])
+@tool(return_direct=True, examples=["I want to subscribe to a topic in ROS. The topic is /client_count and the type is std_msgs/msg/Int32. Please subscribe to it."])
 def subscribe_to_topic(tool_input, cat):
     """
     Subscribe to a topic in the ROS server
     
     """
-    topic_name, topic_type = "/client_count", "std_msgs/msg/Int32"
+    topic_name, topic_type = "/client_count", "std_msgs/Int32"
     log.warning(f"Topic name: {topic_name} Type{topic_type}")
     ros_client, host, port = cm.initialize_connection(cat)
     ros_client.run()
@@ -80,4 +80,27 @@ def subscribe_to_topic(tool_input, cat):
 
     # Return confirmation response
     response = f"Subscribed to topic {topic_name}."
+    return response
+
+@tool
+def publish_to_topic(tool_input, cat):
+    """
+    Publish a message to a topic in the ROS server
+
+    tool_input reppresents the message to be published to the topic
+    
+    """
+    topic_name, topic_type = "/client_count", "std_msgs/Int32"
+    ros_client, host, port = initialize_connection(cat)
+    ros_client.run()
+    try:
+        topic = roslibpy.Topic(ros_client, topic_name, topic_type)
+        message = roslibpy.Message({"data": 42})
+        topic.publish(message)
+    except Exception as e:
+        log.error(f"Failed to publish message to topic {topic_name}: {e}")
+        return f"Error: Failed to publish message to topic {topic_name}."
+
+    # Return confirmation response
+    response = f"Published message to topic {topic_name}."
     return response
