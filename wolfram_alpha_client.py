@@ -51,7 +51,7 @@ def parse_wolfram_alpha_response(data):
 
     return output
 
-@tool(examples=["What is the square root of 9?", "What is the trajectory of a projectile launched at 45 degrees with an initial velocity of 10 m/s?"])
+@tool(examples=["Calculate with wolfram ..."])
 def query_wolfram_alpha(tool_input, cat):
     """
     This tool allows the LLM to perform mathematical operations by querying the Wolfram Alpha API.

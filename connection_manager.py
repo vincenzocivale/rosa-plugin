@@ -2,6 +2,22 @@
 from cat.mad_hatter.decorators import tool
 from cat.log import log
 import roslibpy
+import ast
+import json
+
+def string_to_dict(dict_string):
+    """
+    Convert a dictionary string to a Python dictionary
+
+    dict_string: str, the dictionary in string format
+
+    Returns: dict, the dictionary in Python format
+    """
+    try:
+        return ast.literal_eval(dict_string)
+    except (ValueError, SyntaxError) as e:
+        log.error(f"Failed to convert string to dictionary: {e}")
+        return {}
 
 def initialize_connection(cat):
     "Initialize the connection to the ROS server"
@@ -9,36 +25,24 @@ def initialize_connection(cat):
     host = settings["host_ip"]
     port = settings["port"]
 
-    ros_client = roslibpy.Ros(host=host, port=port)
-    return ros_client, host, port
+    cat.send_ws_message(content = f"Trying to connect to ROS server at {host}:{port}", msg_type = "chat")
+    
 
-@tool(examples=["I would like to connect to the ROS server"], return_direct=True)
-def check_connection(tool_input, cat):
-    "Check the connection to the ROS server"
-    ros_client, host, port = initialize_connection(cat)
-    try:
-        ros_client.run()
-        connection_status = ros_client.is_connected
-        if connection_status:
-            response = f"Connected to ROS server at {host}:{port}"
-            log.info(response)
-        else:
-            response = (
-                            f"Error: Unable to connect to the ROS server at {host}:{port}.\n"
-                            "Please verify your settings and ensure the connection is properly established."
-                        )
-            log.warning(response)
-            
-    except Exception as e:
-        response = f"Failed to connect to ROS server at {host}:{port}.\nError: {str(e)}"
-        log.error(response)
-    return response
+    ros_client = roslibpy.Ros(host=host, port=port)
+
+    ros_client.run()
+
+    if ros_client.is_connected:
+        cat.send_ws_message(content = f"Connection to ROS server established successfully.", msg_type = "chat")
+        return ros_client, host, port
+    else:
+        cat.send_ws_message(content = f"Failed to connect to ROS server at {host}:{port}", msg_type = "chat")
+
 
 @tool(examples=["I would like to get the list of topics"], return_direct=True)
 def get_topics(tool_input, cat):
     "Get the list of topics available in the ROS server"
     ros_client, host, port = initialize_connection(cat)
-    ros_client.run()
     topics = ros_client.get_topics()
     topics_string = "\n".join(topics)
     response = f"The topics available in the ROS server are: \n{topics_string}"
@@ -61,46 +65,59 @@ def change_ros_server_ip(tool_input, cat):
     log.info(response)
     return response
 
-@tool(return_direct=True, examples=["I want to subscribe to a topic in ROS. The topic is /client_count and the type is std_msgs/msg/Int32. Please subscribe to it."])
-def subscribe_to_topic(tool_input, cat):
+@tool(examples=["I want to subscribe to a topic in ROS. "])
+def subscribe_to_topic(subscription_info: dict, cat):
     """
     Subscribe to a topic in the ROS server
     
+    subscription_info is input is a dict with keys: topic_name, topic__type
     """
-    topic_name, topic_type = "/client_count", "std_msgs/Int32"
-    log.warning(f"Topic name: {topic_name} Type{topic_type}")
-    ros_client, host, port = cm.initialize_connection(cat)
-    ros_client.run()
-    try:
-        topic = roslibpy.Topic(ros_client, topic_name, topic_type)
-        topic.subscribe(lambda message: log.info(f"Received message: {message['data']}"))
-    except Exception as e:
-        log.error(f"Failed to subscribe to topic {topic_name}: {e}")
-        return f"Error: Failed to subscribe to topic {topic_name}."
 
-    # Return confirmation response
-    response = f"Subscribed to topic {topic_name}."
-    return response
+    # è necessario convertire subscription_info in un dizionario in quanto stringa
+    subscription_info = json.loads(subscription_info)
 
-@tool
-def publish_to_topic(tool_input, cat):
-    """
-    Publish a message to a topic in the ROS server
-
-    tool_input reppresents the message to be published to the topic
-    
-    """
-    topic_name, topic_type = "/client_count", "std_msgs/Int32"
+    cat.send_ws_message(f"tool input {subscription_info}", msg_type = "chat")
+    cat.send_ws_message(f"tool input keys {subscription_info.keys()}", msg_type = "chat")
     ros_client, host, port = initialize_connection(cat)
-    ros_client.run()
-    try:
-        topic = roslibpy.Topic(ros_client, topic_name, topic_type)
-        message = roslibpy.Message({"data": 42})
-        topic.publish(message)
-    except Exception as e:
-        log.error(f"Failed to publish message to topic {topic_name}: {e}")
-        return f"Error: Failed to publish message to topic {topic_name}."
+    
+    # Variabile per memorizzare il primo messaggio ricevuto
+    first_message = None
 
-    # Return confirmation response
-    response = f"Published message to topic {topic_name}."
-    return response
+    # Flag per indicare se il messaggio è stato ricevuto
+    message_received = False
+
+    # Funzione di callback per gestire i messaggi ricevuti
+    def callback(message):
+        nonlocal first_message, message_received
+        if not message_received:
+            first_message = message
+            message_received = True
+            cat.send_ws_message(f"Received message: {message}", msg_type="chat")
+            topic.unsubscribe()  # Interrompi la sottoscrizione dopo il primo messaggio
+            ros_client.terminate()  # Chiudi la connessione ROS
+
+    # Crea un sottoscrittore (subscriber)
+    topic = roslibpy.Topic(ros_client, subscription_info["topic_name"], subscription_info["topic_type"])
+    topic.subscribe(callback)
+
+    # Attendi il primo messaggio
+    while not message_received:
+        pass
+
+    return first_message
+
+# #@tool
+# def publish_to_topic(topic_name, topic_type, data, cat):
+#     """
+#     Publish a message to a topic in the ROS server
+
+#     tool_input reppresents the message to be published to the topic
+    
+#     """
+
+#     ros_client, host, port = initialize_connection(cat)
+#     topic = roslibpy.Topic(ros_client, topic_name, topic_type)
+#     message = roslibpy.Message({"data": data})
+#     topic.publish(message)
+
+#     return response

@@ -28,3 +28,15 @@ def agent_prompt_prefix(prefix, cat):
         interact with the robotic system you are integrated with. Your responses should be grounded in real-time 
         information whenever possible using the tools available to you."""
     return prefix
+
+# @hook  
+# def before_agent_starts(agent_input, cat):
+#     formatted_history = cat.llm(f"""Convert the robot control command {agent_input['chat_history']} 
+#                                 into a series of ROS operations to complete the task. For any necessary calculations, 
+#                                 use the formatting 'Calculate ...' to clearly indicate computational steps.""")
+    
+#     agent_input["chat_history"] = f"Execute the following operations one at a time, in the specified order to control ROS system: {formatted_history}"
+
+#     cat.send_ws_message(formatted_history)
+    
+#     return agent_input

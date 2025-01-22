@@ -1,2 +1,3 @@
 roslibpy
 wolframalpha
+jsons
