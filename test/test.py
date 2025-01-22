@@ -36,30 +36,45 @@
        
        
 # import roslibpy
+# import time
 
 # # Connessione al rosbridge WebSocket
 # client = roslibpy.Ros(host='172.18.173.231', port=9090)
 # client.run()
 
-# # Verifica che la connessione sia attiva
-# if client.is_connected:
-#     print("Connesso a ROS!")
-
-# # Callback per gestire i messaggi ricevuti
-# def callback(message):
-#     print(f"Messaggio ricevuto: {message}")
-
-# # Creazione di un sottoscrittore (subscriber)
-# subscriber = roslibpy.Topic(client, '/turtle1/pose', 'turtlesim_msgs/msg/Pose')
-# subscriber.subscribe(callback)
-
-# # Mantieni il programma in esecuzione per ricevere messaggi
 # try:
-#     while True:
-#         pass
-# except KeyboardInterrupt:
-#     print("Interrotto dall'utente.")
+#     # Verifica connessione
+#     if client.is_connected:
+#         print("Connesso a ROS!")
+#     else:
+#         raise ConnectionError("Connessione ROS fallita")
 
-# # Chiudi la connessione
-# subscriber.unsubscribe()
-# client.terminate()
+#     # Creazione publisher per il comando di movimento
+#     publisher = roslibpy.Topic(
+#         client,
+#         '/turtle1/cmd_vel',  # Topic per controllare il movimento
+#         'geometry_msgs/Twist',  # Tipo messaggio per comandi di velocità
+#         queue_size=10
+#     )
+
+#     # Pubblica il messaggio di movimento (avanti e rotazione)
+#     move_cmd = {
+#         'linear': {'x': 1.0, 'y': 0.0, 'z': 0.0},  # Velocità lineare in avanti
+#         'angular': {'x': 0.0, 'y': 0.0, 'z': 1.0}  # Velocità angolare (rotazione sinistra)
+#     }
+
+#     publisher.advertise()  # Registra il publisher
+
+#     print("Inizio pubblicazione comandi...")
+#     while client.is_connected:
+#         publisher.publish(roslibpy.Message(move_cmd))
+#         time.sleep(0.1)  # Riduce il carico sulla CPU
+
+# except KeyboardInterrupt:
+#     print("\nInterruzione da tastiera")
+# finally:
+#     # Pulizia delle risorse
+#     if 'publisher' in locals():
+#         publisher.unadvertise()
+#     client.terminate()
+#     print("Connessione chiusa")

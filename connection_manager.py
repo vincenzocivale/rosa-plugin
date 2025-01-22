@@ -4,6 +4,7 @@ from cat.log import log
 import roslibpy
 import ast
 import json
+import time
 
 def string_to_dict(dict_string):
     """
@@ -70,7 +71,7 @@ def subscribe_to_topic(subscription_info: dict, cat):
     """
     Subscribe to a topic in the ROS server
     
-    subscription_info is input is a dict with keys: topic_name, topic__type
+    subscription_info is input is a dict with keys: topic_name, message_type
     """
 
     # è necessario convertire subscription_info in un dizionario in quanto stringa
@@ -97,7 +98,7 @@ def subscribe_to_topic(subscription_info: dict, cat):
             ros_client.terminate()  # Chiudi la connessione ROS
 
     # Crea un sottoscrittore (subscriber)
-    topic = roslibpy.Topic(ros_client, subscription_info["topic_name"], subscription_info["topic_type"])
+    topic = roslibpy.Topic(ros_client, subscription_info["topic_name"], subscription_info["message_type"])
     topic.subscribe(callback)
 
     # Attendi il primo messaggio
@@ -106,18 +107,29 @@ def subscribe_to_topic(subscription_info: dict, cat):
 
     return first_message
 
-# #@tool
-# def publish_to_topic(topic_name, topic_type, data, cat):
-#     """
-#     Publish a message to a topic in the ROS server
-
-#     tool_input reppresents the message to be published to the topic
+@tool(examples=["I want to publish to topic /turtle1/cmd_vel of type geometry_msgs/msg/Twist with linear x=1.0 and angular z=0.5"]) 
+def publish_to_topic(publication_info: dict, cat):
+    """
+        Publish to a topic in the ROS server
+        
+        publication_info is input is a dict with keys: topic_name, duration (duration of pubblication in seconds), message_type, message_data (Python dictionary representing the content of the ROS message to be published on a topic. It must be structured to comply with the format of the message type specified for the topic)
+        """
     
-#     """
+    cat.send_ws_message(f"tool input {publication_info}", msg_type = "chat")
 
-#     ros_client, host, port = initialize_connection(cat)
-#     topic = roslibpy.Topic(ros_client, topic_name, topic_type)
-#     message = roslibpy.Message({"data": data})
-#     topic.publish(message)
+    # è necessario convertire subscription_info in un dizionario in quanto stringa
+    publication_info = json.loads(publication_info)
 
-#     return response
+    ros_client, host, port = initialize_connection(cat)
+
+    # Crea un editore (publisher)
+    publisher = roslibpy.Topic(ros_client, publication_info["topic_name"], publication_info["message_type"])
+
+    duration = publication_info.get("duration", 1.0)
+    start_time = time.time()
+    while (time.time() - start_time) < duration:
+        publisher.publish(roslibpy.Message(publication_info["message_data"]))
+        time.sleep(0.1)  # 10Hz
+
+    return "Message published successfully and the task is completed"
+
