@@ -78,3 +78,13 @@
 #         publisher.unadvertise()
 #     client.terminate()
 #     print("Connessione chiusa")
+
+# import json 
+# input = """{"tasks": {"draw_circle": {"task_type": "publish", "topic_name": "/turtle1/cmd_vel", "message_type": "geometry_msgs/msg/Twist", "message_data": {"linear": {"x": 1.0, "y": 0.0, "z": 0.0}, "angular": {"x": 0.0, "y": 0.0, "z": 1.0}}, "duration": 6}, "move_forward": {"task_type": "publish", "topic_name": "/turtle1/cmd_vel", "message_type": "geometry_msgs/msg/Twist", "message_data": {"linear": {"x": 1.0, "y": 0.0, "z": 0.0}, "angular": {"x": 0.0, "y": 0.0, "z": 0.0}}, "duration": 3}, "turn_right": {"task_type": "publish", "topic_name": "/turtle1/cmd_vel", "message_type": "geometry_msgs/msg/Twist", "message_data": {"linear": {"x": 0.0, "y": 0.0, "z": 0.0}, "angular": {"x": 0.0, "y": 0.0, "z": -1.57}}, "duration": 1}}}"""
+# tasks = json.loads(input)
+# task_sequence = tasks['tasks'] 
+# for task_name in task_sequence.keys():
+#     task_data = task_sequence[task_name]
+#     task_type = task_data["task_type"]
+#     print(f"Executing task {task_name} of type {task_type}...")
+        
