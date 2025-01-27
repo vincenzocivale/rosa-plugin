@@ -66,7 +66,7 @@ def change_ros_server_ip(tool_input, cat):
     log.info(response)
     return response
 
-@tool(examples=["I want to subscribe to a topic in ROS. "])
+#@tool(examples=["I want to subscribe to a topic in ROS. "])
 def subscribe_to_topic(subscription_info: dict, cat):
     """
     Subscribe to a topic in the ROS server. The function must be executed when there's ONLY ONE OPERATION IN PROMPT
@@ -107,7 +107,7 @@ def subscribe_to_topic(subscription_info: dict, cat):
 
     return first_message
 
-@tool(examples=["I want to publish to topic /turtle1/cmd_vel of type geometry_msgs/msg/Twist with linear x=1.0 and angular z=0.5"]) 
+#@tool(examples=["I want to publish to topic /turtle1/cmd_vel of type geometry_msgs/msg/Twist with linear x=1.0 and angular z=0.5"]) 
 def publish_to_topic(publication_info: dict, cat):
     """
         The function must be executed when there's ONLY ONE OPERATION IN PROMPT
@@ -121,7 +121,7 @@ def publish_to_topic(publication_info: dict, cat):
     cat.send_ws_message(f"tool input {publication_info}", msg_type = "chat")
 
     # è necessario convertire subscription_info in un dizionario in quanto stringa
-    publication_info = json.loads(publication_info)
+    #publication_info = json.loads(publication_info)
 
     ros_client, host, port = initialize_connection(cat)
 
@@ -139,7 +139,6 @@ def publish_to_topic(publication_info: dict, cat):
 @tool()
 def sequence_task_execution(tasks: dict, cat):
     """
-        The function must be executed when there're MORE THAN ONE TASK IN PROMPT
         The `tasks` dictionary defines a set of operations (tasks) to be executed in a ROS-based robot control system. Each key in the dictionary represents a unique task, and the value is a dictionary containing all necessary details to execute that task.
 
         Structure of the `tasks` dictionary:
@@ -158,21 +157,19 @@ def sequence_task_execution(tasks: dict, cat):
         }
     """
 
-    
-    
     cat.send_ws_message(f"tool input {tasks}", msg_type = "chat")
     cat.send_ws_message(f"tool type {type(tasks)}", msg_type = "chat")
     # cat.send_ws_message(f"tool input {tasks["task"]}", msg_type = "chat")
     #cat.send_ws_message(f"tool type {type(tasks['tasks'][0])}", msg_type="chat")
 
-    # tasks = json.loads(tasks)
+    tasks = json.loads(tasks)
 
-    # task_sequence = tasks['tasks'] 
-    # for task_name in task_sequence.keys():
-    #     task_data = task_sequence[task_name] 
-    #     task_type = task_data["task_type"]
-    #     if task_type == "publish":
-    #         publish_to_topic(task_data, cat)
-    #     elif task_type == "subscribe":
-    #         subscribe_to_topic(task_data, cat)
+    task_sequence = tasks['tasks'] 
+    for task_name in task_sequence.keys():
+        task_data = task_sequence[task_name] 
+        task_type = task_data["task_type"]
+        if task_type == "publish":
+            publish_to_topic(task_data, cat)
+        elif task_type == "subscribe":
+            subscribe_to_topic(task_data, cat)
 
