@@ -164,12 +164,12 @@ def sequence_task_execution(tasks: dict, cat):
 
     tasks = json.loads(tasks)
 
-    task_sequence = tasks['tasks'] 
-    for task_name in task_sequence.keys():
-        task_data = task_sequence[task_name] 
-        task_type = task_data["task_type"]
+    #task_sequence = tasks['tasks'] 
+    for task_name in tasks:
+        #task_data = task_sequence[task_name] 
+        task_type = task_name["task_type"]
         if task_type == "publish":
-            publish_to_topic(task_data, cat)
+            publish_to_topic(task_name, cat)
         elif task_type == "subscribe":
-            subscribe_to_topic(task_data, cat)
+            subscribe_to_topic(task_name, cat)
 

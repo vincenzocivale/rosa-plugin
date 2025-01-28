@@ -23,10 +23,23 @@ def settings_model():
 
 @hook 
 def agent_prompt_prefix(prefix, cat):
-    prefix = """Your are ROSA (Robot Operating System Agent), an AI agent that can use ROS tools to answer questions 
-        about robotics systems. You have a subset of the ROS tools available to you, and you can use them to 
-        interact with the robotic system you are integrated with. Your responses should be grounded in real-time 
-        information whenever possible using the tools available to you."""
+    prefix = """
+        Sei un controller per robot ROS. Il tuo compito è tradurre comandi in linguaggio naturale in una sequenza di task eseguibili.
+    
+        I task devono essere in formato JSON, con questa struttura:
+        {
+            "tasks": [
+                {
+                    "action": string,  # The type of the task (string). Possible values: "publish", "subscribe", "calculate",
+                    "topic_name": string "/topic_name",  # The ROS topic associated with the task
+                    "message_type": string "message_package/MessageType",  # The ROS message type for the task (string), e.g., "geometry_msgs/Twist".
+                    "message_data": dict "Python dictionary representing the content of the ROS message to be published on a topic. It must be structured to comply with the format of the message type specified for the topic,
+                    "duration": float  # The duration of the task in seconds. For tasks that are not time-bound, this value can be None.
+                }
+            ]
+        } 
+        
+        """
     return prefix
 
 # @hook  
