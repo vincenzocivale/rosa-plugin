@@ -67,38 +67,27 @@ def change_ros_server_ip(tool_input, cat):
     return response
 
 #@tool(examples=["I want to subscribe to a topic in ROS. "])
-def subscribe_to_topic(subscription_info: dict, ros_client, cat):
+def subscribe_to_topic(sub_info: dict, ros_client, cat):
     """
-    Subscribe to a topic in the ROS server. The function must be executed when there's ONLY ONE OPERATION IN PROMPT
+    Subscribe to a topic in the ROS server and stop after receiving the first message.
     
-    subscription_info is input is a dict with keys: topic_name, message_type
+    :param sub_info: Dictionary containing 'topic_name' and 'message_type'
+    :param ros_client: The ROS client (roslibpy.Ros)
+    :param cat: (Optional) An object to send log or chat messages
     """
+    listener = roslibpy.Topic(ros_client, sub_info['topic_name'], sub_info['message_type'])
 
+    # Callback function that is called when a message is received
+    def message_callback(message):
+        cat.send_ws_message(f"Received message: {message}", msg_type = "chat")
+        
+        # After receiving the first message, unsubscribe
+        listener.unsubscribe()
+    
+    # Subscribe to the topic with the callback function
+    listener.subscribe(message_callback)
 
-    # Variabile per memorizzare il primo messaggio ricevuto
-    first_message = None
-
-    # Flag per indicare se il messaggio è stato ricevuto
-    message_received = False
-
-    # Funzione di callback per gestire i messaggi ricevuti
-    def callback(message):
-        nonlocal first_message, message_received
-        if not message_received:
-            first_message = message
-            message_received = True
-            cat.send_ws_message(f"Received message: {message}", msg_type="chat")
-            topic.unsubscribe()  # Interrompi la sottoscrizione dopo il primo messaggio
-
-    # Crea un sottoscrittore (subscriber)
-    topic = roslibpy.Topic(ros_client, subscription_info["topic_name"], subscription_info["message_type"])
-    topic.subscribe(callback)
-
-    # Attendi il primo messaggio
-    while not message_received:
-        pass
-
-    return first_message
+    
 
 #@tool(examples=["I want to publish to topic /turtle1/cmd_vel of type geometry_msgs/msg/Twist with linear x=1.0 and angular z=0.5"]) 
 def publish_to_topic(publication_info: dict, ros_client, cat):
