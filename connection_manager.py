@@ -136,7 +136,7 @@ def publish_to_topic(publication_info: dict, cat):
 
     return "Message published successfully. Proceed with the next task or conclude the operation."
 
-@tool()
+@tool(return_direct=True, examples=["I would like to publish to the ROS topic /turtle1/cmd_vel of type geometry_msgs/Twist. The publication should be performed for 5 seconds with ..."])
 def sequence_task_execution(tasks: dict, cat):
     """
         The `tasks` dictionary defines a set of operations (tasks) to be executed in a ROS-based robot control system. Each key in the dictionary represents a unique task, and the value is a dictionary containing all necessary details to execute that task.
@@ -163,13 +163,15 @@ def sequence_task_execution(tasks: dict, cat):
     #cat.send_ws_message(f"tool type {type(tasks['tasks'][0])}", msg_type="chat")
 
     tasks = json.loads(tasks)
-
-    #task_sequence = tasks['tasks'] 
-    for task_name in tasks:
-        #task_data = task_sequence[task_name] 
-        task_type = task_name["task_type"]
+    if "tasks" in tasks.keys():
+        tasks = tasks['tasks'] 
+    for task_name in tasks.keys():
+        task_data = tasks[task_name] 
+        task_type = task_data["task_type"]
         if task_type == "publish":
-            publish_to_topic(task_name, cat)
+            publish_to_topic(task_data, cat)
         elif task_type == "subscribe":
-            subscribe_to_topic(task_name, cat)
+            subscribe_to_topic(task_data, cat)
+
+    return {"output" : "All tasks executed successfully. Proceed with the next task or conclude the operation."}
 

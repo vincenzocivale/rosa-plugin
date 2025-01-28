@@ -24,21 +24,64 @@ def settings_model():
 @hook 
 def agent_prompt_prefix(prefix, cat):
     prefix = """
-        Sei un controller per robot ROS. Il tuo compito è tradurre comandi in linguaggio naturale in una sequenza di task eseguibili.
-    
-        I task devono essere in formato JSON, con questa struttura:
-        {
-            "tasks": [
-                {
-                    "action": string,  # The type of the task (string). Possible values: "publish", "subscribe", "calculate",
-                    "topic_name": string "/topic_name",  # The ROS topic associated with the task
-                    "message_type": string "message_package/MessageType",  # The ROS message type for the task (string), e.g., "geometry_msgs/Twist".
-                    "message_data": dict "Python dictionary representing the content of the ROS message to be published on a topic. It must be structured to comply with the format of the message type specified for the topic,
-                    "duration": float  # The duration of the task in seconds. For tasks that are not time-bound, this value can be None.
-                }
-            ]
-        } 
+        Sei un controller per robot ROS. Il tuo compito è tradurre comandi in linguaggio naturale in un dizionario di task eseguibili.
         
+        Struttura del dizionario `tasks`:
+        {{
+            "nome_task_univoco": {{
+                "task_type": "publish|subscribe|calculate",
+                "topic_name": "/nome_topic",
+                "message_type": "message_package/TipoMessaggio",
+                "message_data": {{
+                    "campo1": valore1,
+                    "campo2": valore2
+                }},
+                "duration": secondi
+            }},
+            // ... altri task
+        }}
+        
+        Esempi concreti:
+        
+        1. Comando: "Muovi il robot in avanti a 1 m/s per 5 secondi."
+        Output:
+        {{
+            "move_forward": {{
+                "task_type": "publish",
+                "topic_name": "/turtle1/cmd_vel",
+                "message_type": "geometry_msgs/Twist",
+                "message_data": {{
+                    "linear": {{ "x": 1.0, "y": 0.0, "z": 0.0 }},
+                    "angular": {{ "x": 0.0, "y": 0.0, "z": 0.0 }}
+                }},
+                "duration": 5.0
+            }}
+        }}
+        
+        2. Comando: "Ruota di 90 gradi e poi muoviti in avanti per 3 secondi. Poi muovi il robot in avanti a 1 m/s per 3 secondi."
+        Output:
+        {{
+            "rotate_90": {{
+                "task_type": "publish",
+                "topic_name": "/turtle1/cmd_vel",
+                "message_type": "geometry_msgs/Twist",
+                "message_data": {{
+                    "linear": {{ "x": 0.0, "y": 0.0, "z": 0.0 }},
+                    "angular": {{ "x": 0.0, "y": 0.0, "z": 1.57 }}
+                }},
+                "duration": 1.0
+            }},
+            "move_after_rotation": {{
+                "task_type": "publish",
+                "topic_name": "/turtle1/cmd_vel",
+                "message_type": "geometry_msgs/Twist",
+                "message_data": {{
+                    "linear": {{ "x": 1.0, "y": 0.0, "z": 0.0 }},
+                    "angular": {{ "x": 0.0, "y": 0.0, "z": 0.0 }}
+                }},
+                "duration": 3.0
+            }}
+        }}
         """
     return prefix
 
@@ -48,7 +91,7 @@ def agent_prompt_prefix(prefix, cat):
 #                                 into a series of ROS operations to complete the task. For any necessary calculations, 
 #                                 use the formatting 'Calculate ...' to clearly indicate computational steps.""")
     
-#     agent_input["chat_history"] = f"Execute the following operations one at a time, in the specified order to control ROS system: {formatted_history}"
+#     agent_input.chat_history = f"Execute the following operations one at a time, in the specified order to control ROS system: {formatted_history}"
 
 #     cat.send_ws_message(formatted_history)
     

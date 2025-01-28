@@ -1,3 +1,31 @@
 I would like to publish to the ROS topic /turtle1/cmd_vel of type geometry_msgs/Twist. The publication should be performed for 5 seconds with the following values:
-{ 'linear': x = 1.0, y = 0.0, z = 0.0, 'angular': x = 0.0, y = 0.0, z = 0.5 }
+"linear": {
+"x": 1.0,
+"y": 0.0,
+"z": 0.0
+},
+"angular": {
+"x": 0.0,
+"y": 0.0,
+"z": 0.5,
+}
 
+
+
+I would like to publish to the ROS topic /turtle1/cmd_vel of type geometry_msgs/Twist. The publication should be performed for 5 seconds with the following values:
+"linear": {
+"x": 1.0,
+"y": 0.0,
+"z": 0.0
+},
+"angular": {
+"x": 0.0,
+"y": 0.0,
+"z": 0.5
+}.
+Then, I would like to publish to the ROS topic /turtle1/pose of type turtlesim/Pose. The publication should be performed for 3 seconds with the following values:
+"x": 5.0,
+"y": 2.5,
+"theta": 1.57,
+"linear_velocity": 0.0,
+"angular_velocity": 0.0.
