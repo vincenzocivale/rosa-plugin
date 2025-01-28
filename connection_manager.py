@@ -67,19 +67,15 @@ def change_ros_server_ip(tool_input, cat):
     return response
 
 #@tool(examples=["I want to subscribe to a topic in ROS. "])
-def subscribe_to_topic(subscription_info: dict, cat):
+def subscribe_to_topic(subscription_info: dict, ros_client, cat):
     """
     Subscribe to a topic in the ROS server. The function must be executed when there's ONLY ONE OPERATION IN PROMPT
     
     subscription_info is input is a dict with keys: topic_name, message_type
     """
 
-    # è necessario convertire subscription_info in un dizionario in quanto stringa
-    subscription_info = json.loads(subscription_info)
-
     cat.send_ws_message(f"tool input {subscription_info}", msg_type = "chat")
     cat.send_ws_message(f"tool input keys {subscription_info.keys()}", msg_type = "chat")
-    ros_client, host, port = initialize_connection(cat)
 
     # Variabile per memorizzare il primo messaggio ricevuto
     first_message = None
@@ -108,7 +104,7 @@ def subscribe_to_topic(subscription_info: dict, cat):
     return first_message
 
 #@tool(examples=["I want to publish to topic /turtle1/cmd_vel of type geometry_msgs/msg/Twist with linear x=1.0 and angular z=0.5"]) 
-def publish_to_topic(publication_info: dict, cat):
+def publish_to_topic(publication_info: dict, ros_client, cat):
     """
         The function must be executed when there's ONLY ONE OPERATION IN PROMPT
         Publish to a topic in the ROS server
@@ -118,12 +114,8 @@ def publish_to_topic(publication_info: dict, cat):
         It must be structured to comply with the format of the message type specified for the topic)
         """
     
-    cat.send_ws_message(f"tool input {publication_info}", msg_type = "chat")
+    cat.send_ws_message(f"Pubblishing to topic {publication_info['topic_name']}", msg_type = "chat")
 
-    # è necessario convertire subscription_info in un dizionario in quanto stringa
-    #publication_info = json.loads(publication_info)
-
-    ros_client, host, port = initialize_connection(cat)
 
     # Crea un editore (publisher)
     publisher = roslibpy.Topic(ros_client, publication_info["topic_name"], publication_info["message_type"])
@@ -157,6 +149,8 @@ def sequence_task_execution(tasks: dict, cat):
         }
     """
 
+    ros_client, host, port = initialize_connection(cat)
+
     cat.send_ws_message(f"tool input {tasks}", msg_type = "chat")
     cat.send_ws_message(f"tool type {type(tasks)}", msg_type = "chat")
     # cat.send_ws_message(f"tool input {tasks["task"]}", msg_type = "chat")
@@ -169,9 +163,11 @@ def sequence_task_execution(tasks: dict, cat):
         task_data = tasks[task_name] 
         task_type = task_data["task_type"]
         if task_type == "publish":
-            publish_to_topic(task_data, cat)
+            publish_to_topic(task_data, ros_client, cat)
         elif task_type == "subscribe":
-            subscribe_to_topic(task_data, cat)
+            subscribe_to_topic(task_data, ros_client, cat)
+    
+    ros_client.terminate()
 
-    return {"output" : "All tasks executed successfully. Proceed with the next task or conclude the operation."}
+    return "All tasks executed successfully. Proceed with the next task or conclude the operation."
 
