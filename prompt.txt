@@ -34,3 +34,5 @@ Then, I would like to publish to the ROS topic /turtle1/cmd_velof type geometry_
     "y": 0.0,
     "z": 0.0
 }
+
+Vorrei controllare il robot turtlesim tramite ROS, pubblicnado sul topic della velocità in modo che si muova in avanti per 3 secondi. Fai riferimento alla documentazione fornita per determianre le info necessarie all’utilizzo del tool

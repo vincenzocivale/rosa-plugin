@@ -74,8 +74,6 @@ def subscribe_to_topic(subscription_info: dict, ros_client, cat):
     subscription_info is input is a dict with keys: topic_name, message_type
     """
 
-    cat.send_ws_message(f"tool input {subscription_info}", msg_type = "chat")
-    cat.send_ws_message(f"tool input keys {subscription_info.keys()}", msg_type = "chat")
 
     # Variabile per memorizzare il primo messaggio ricevuto
     first_message = None
@@ -91,7 +89,6 @@ def subscribe_to_topic(subscription_info: dict, ros_client, cat):
             message_received = True
             cat.send_ws_message(f"Received message: {message}", msg_type="chat")
             topic.unsubscribe()  # Interrompi la sottoscrizione dopo il primo messaggio
-            ros_client.terminate()  # Chiudi la connessione ROS
 
     # Crea un sottoscrittore (subscriber)
     topic = roslibpy.Topic(ros_client, subscription_info["topic_name"], subscription_info["message_type"])
@@ -128,7 +125,7 @@ def publish_to_topic(publication_info: dict, ros_client, cat):
 
     return "Message published successfully. Proceed with the next task or conclude the operation."
 
-@tool(return_direct=True, examples=["I would like to publish to the ROS topic /turtle1/cmd_vel of type geometry_msgs/Twist. The publication should be performed for 5 seconds with ..."])
+@tool(return_direct=True, examples=["I would like to publish to the ROS topic /turtle1/cmd_vel of type geometry_msgs/Twist. The publication should be performed for 5 seconds with ...", "I would like to subscribe to the ROS topic /turtle1/cmd_vel"])
 def sequence_task_execution(tasks: dict, cat):
     """
         The `tasks` dictionary defines a set of operations (tasks) to be executed in a ROS-based robot control system. Each key in the dictionary represents a unique task, and the value is a dictionary containing all necessary details to execute that task.
@@ -151,10 +148,7 @@ def sequence_task_execution(tasks: dict, cat):
 
     ros_client, host, port = initialize_connection(cat)
 
-    cat.send_ws_message(f"tool input {tasks}", msg_type = "chat")
-    cat.send_ws_message(f"tool type {type(tasks)}", msg_type = "chat")
-    # cat.send_ws_message(f"tool input {tasks["task"]}", msg_type = "chat")
-    #cat.send_ws_message(f"tool type {type(tasks['tasks'][0])}", msg_type="chat")
+    cat.send_ws_message(f"tool input {tasks}")
 
     tasks = json.loads(tasks)
     if "tasks" in tasks.keys():

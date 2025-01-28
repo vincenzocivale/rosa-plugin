@@ -24,7 +24,9 @@ def settings_model():
 @hook 
 def agent_prompt_prefix(prefix, cat):
     prefix = """
-        Sei un controller per robot ROS. Il tuo compito è tradurre comandi in linguaggio naturale in un dizionario di task eseguibili.
+        Sei un controller per robot ROS. Il tuo compito è tradurre comandi in linguaggio naturale in un dizionario di task eseguibili. 
+        Nel caso in cui non espressamente definito dall'utente, DEVI recuperare informazioni su topic, tipologia di messaggio e formattazione del dato dalla documentazione fornita sul robot da utilizzare.
+
         
         Struttura del dizionario `tasks`:
         {{
