@@ -1,10 +1,10 @@
 {
     "name": "Rosa (Robotic Operating System Agent)",
-    "version": "0.1.2",
+    "version": "0.2.7",
     "description": "A plugin that enables control of ROS (Robot Operating System) systems through Large Language Models. Inspired by NASA-JPL's ROSA project, this plugin facilitates seamless interaction between LLMs and ROS-based robots and systems.",
     "author_name": "Vincenzo Yuto Civale",
     "author_url": "https://github.com/vincenzocivale",
-    "plugin_url": "https://github.com/my_name/rosa_(robotic_operating_system_agent)",
+    "plugin_url": "https://github.com/vincenzocivale/rosa-plugin",
     "tags": "ROS, llm-agent, robot-control",
     "thumb": "https://raw.githubusercontent.com/vincenzocivale/rosa-plugin/main/icon.png"
 }

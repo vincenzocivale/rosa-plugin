@@ -2,23 +2,8 @@
 from cat.mad_hatter.decorators import tool
 from cat.log import log
 import roslibpy
-import ast
 import json
 import time
-
-def string_to_dict(dict_string):
-    """
-    Convert a dictionary string to a Python dictionary
-
-    dict_string: str, the dictionary in string format
-
-    Returns: dict, the dictionary in Python format
-    """
-    try:
-        return ast.literal_eval(dict_string)
-    except (ValueError, SyntaxError) as e:
-        log.error(f"Failed to convert string to dictionary: {e}")
-        return {}
 
 def initialize_connection(cat):
     "Initialize the connection to the ROS server"

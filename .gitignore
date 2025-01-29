@@ -157,4 +157,4 @@ settings.json
 # Custom files
 prompt.txt
 commands.txt
-test.py
+test/
