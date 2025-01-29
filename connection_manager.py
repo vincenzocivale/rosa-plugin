@@ -28,16 +28,16 @@ def initialize_connection(cat):
 
     cat.send_ws_message(content = f"Trying to connect to ROS server at {host}:{port}", msg_type = "chat")
     
+    try:
+        ros_client = roslibpy.Ros(host=host, port=port)
 
-    ros_client = roslibpy.Ros(host=host, port=port)
-
-    ros_client.run()
-
-    if ros_client.is_connected:
+        ros_client.run()
         cat.send_ws_message(content = f"Connection to ROS server established successfully.", msg_type = "chat")
         return ros_client, host, port
-    else:
+    
+    except:
         cat.send_ws_message(content = f"Failed to connect to ROS server at {host}:{port}", msg_type = "chat")
+        
 
 
 @tool(examples=["I would like to get the list of topics"], return_direct=True)
@@ -126,7 +126,7 @@ def sequence_task_execution(tasks: dict, cat):
                 "topic_name": string "/topic_name",  # The ROS topic associated with the task.
                 "message_type": string "message_package/MessageType",  # The ROS message type for the task (string), e.g., "geometry_msgs/Twist".
                 "message_data": dict "Python dictionary representing the content of the ROS message to be published on a topic. It must be structured to comply with the format of the message type specified for the topic,
-                "duration": float  # The duration of the task in seconds. For tasks that are not time-bound, this value can be None.
+                "duration": float | None # The duration of the task in seconds. For tasks that are not time-bound, this value can be None.
             },
             "task_name_2": {  # The unique name of the task 2(string)
                 ....
@@ -150,7 +150,7 @@ def sequence_task_execution(tasks: dict, cat):
         elif task_type == "subscribe":
             subscribe_to_topic(task_data, ros_client, cat)
     
-    ros_client.terminate()
+    ros_client.close()
 
     return "All tasks executed successfully. Proceed with the next task or conclude the operation."
 
