@@ -6,5 +6,5 @@
     "author_url": "https://github.com/vincenzocivale",
     "plugin_url": "https://github.com/my_name/rosa_(robotic_operating_system_agent)",
     "tags": "ROS, llm-agent, robot-control",
-    "thumb": "icon.png"
+    "thumb": "https://raw.githubusercontent.com/vincenzocivale/rosa-plugin/main/icon.png"
 }
