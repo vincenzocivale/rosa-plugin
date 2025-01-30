@@ -51,7 +51,7 @@ def change_ros_server_ip(tool_input, cat):
     log.info(response)
     return response
 
-#@tool(examples=["I want to subscribe to a topic in ROS. "])
+
 def subscribe_to_topic(sub_info: dict, ros_client, cat):
     """
     Subscribe to a topic in the ROS server and stop after receiving the first message.
@@ -74,7 +74,6 @@ def subscribe_to_topic(sub_info: dict, ros_client, cat):
 
     
 
-#@tool(examples=["I want to publish to topic /turtle1/cmd_vel of type geometry_msgs/msg/Twist with linear x=1.0 and angular z=0.5"]) 
 def publish_to_topic(publication_info: dict, ros_client, cat):
     """
         The function must be executed when there's ONLY ONE OPERATION IN PROMPT
@@ -87,8 +86,6 @@ def publish_to_topic(publication_info: dict, ros_client, cat):
     
     cat.send_ws_message(f"Pubblishing to topic {publication_info['topic_name']}", msg_type = "chat")
 
-
-    # Crea un editore (publisher)
     publisher = roslibpy.Topic(ros_client, publication_info["topic_name"], publication_info["message_type"])
 
     duration = publication_info.get("duration", 1.0)
