@@ -12,7 +12,7 @@ Grazie all’ecosistema di Chetshire AI, l’interazione può essere estesa con 
 
 - **Interfacciamento con Cheshire Cat AI**: Grazie all’integrazione con il framework, il plugin può essere utilizzato in combinazione con i widget e le librerie client messi a disposizione ([more info](https://cheshire-cat-ai.github.io/docs/production/network/clients/)).
 
-- **Flessibilità nell’utilizzo dei modelli LLM**: Supporta diverse modalità di interazione con modelli di linguaggio, consentendo l’utilizzo di API esterne o di implementazioni locali tramite OLLAMA (vedi Configurazione Docker Compose ).
+- **Flessibilità nell’utilizzo dei modelli LLM**: Supporta diverse modalità di interazione con modelli di linguaggio, consentendo l’utilizzo di API esterne o di implementazioni locali tramite OLLAMA ([more info](https://cheshire-cat-ai.github.io/docs/production/administrators/docker-compose/#cat-ollama)).
 
 - **Configurazione automatica del sistema ROS target**:  L’agente AI analizza la documentazione del sistema ROS tramite Retrieval-Augmented Generation (RAG), identificando automaticamente i topic e la formattazione dei messaggi necessari per eseguire il task richiesto. In questo modo, l’agente si adatta a diversi robot senza la necessità di modifiche manuali o codice personalizzato.
 
