@@ -12,7 +12,7 @@ Grazie all’ecosistema di Chetshire AI, l’interazione può essere estesa con 
 
 - 🤖 **Connessione e comunicazione con ROS**: Il plugin stabilisce una connessione al sistema ROS mediante [roslibpy](https://roslibpy.readthedocs.io/en/latest/), permettendo l’invio e la ricezione di messaggi sui topic ROS senza necessità di una configurazione ROS completa sul client.
 
-- ⚡️ **Disponibilità API**: Grazie all’integrazione con il framework, il plugin può essere utilizzato in combinazione con i widget e le librerie client messi a disposizione dalla community per i principali linguaggi di programmazione ([more info](https://cheshire-cat-ai.github.io/docs/production/network/clients/)).
+- ⚡**Disponibilità API**: Grazie all’integrazione con il framework, il plugin può essere utilizzato in combinazione con i widget e le librerie client messi a disposizione dalla community per i principali linguaggi di programmazione ([more info](https://cheshire-cat-ai.github.io/docs/production/network/clients/)).
 
 - 🧠 **Flessibilità nell’utilizzo dei modelli LLM**: Supporta diverse modalità di interazione con modelli di linguaggio, consentendo l’utilizzo di API esterne o di implementazioni locali tramite OLLAMA ([more info](https://cheshire-cat-ai.github.io/docs/production/administrators/docker-compose/#cat-ollama)).
 
