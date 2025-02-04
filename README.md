@@ -1,5 +1,7 @@
 # Rosa (Robotic Operating System Agent)
 
+![Rosa Logo](icon.png)
+
 Il ROS-Connect Plugin estende il framework [Chetshire AI](https://cheshirecat.ai/), permettendo a un agente AI di interagire autonomamente con un sistema ROS (Robot Operating System).
 
 Ispirato al progetto [ROSA](https://github.com/nasa-jpl/rosa) di NASA-JPL, il plugin adotta un approccio più flessibile e scalabile: grazie all’integrazione con [roslibpy](https://roslibpy.readthedocs.io/en/latest/), un'unica istanza del framework può controllare simultaneamente più sistemi ROS senza richiedere l’installazione locale di ROS. Inoltre, l’agente può analizzare dinamicamente la documentazione del sistema ROS, adattandosi automaticamente alla configurazione del robot senza necessità di codice personalizzato.
@@ -17,4 +19,3 @@ Grazie all’ecosistema di Chetshire AI, l’interazione può essere estesa con 
 - **Configurazione automatica del sistema ROS target**:  L’agente AI analizza la documentazione del sistema ROS tramite Retrieval-Augmented Generation (RAG), identificando automaticamente i topic e la formattazione dei messaggi necessari per eseguire il task richiesto. In questo modo, l’agente si adatta a diversi robot senza la necessità di modifiche manuali o codice personalizzato.
 
 - **Supporto multimodale** : Una funzionalità **in sviluppo** che prevede la gestione di input provenienti da diverse fonti (audio, video, testo) per arricchire la comunicazione con l’agente AI.
-
