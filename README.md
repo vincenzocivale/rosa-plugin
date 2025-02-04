@@ -1,6 +1,6 @@
 # Rosa (Robotic Operating System Agent)
 
-![Rosa Logo](icon.png)
+<img src="icon.png" alt="Rosa Logo" width="200"/>
 
 Il ROS-Connect Plugin estende il framework [Chetshire AI](https://cheshirecat.ai/), permettendo a un agente AI di interagire autonomamente con un sistema ROS (Robot Operating System).
 
