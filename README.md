@@ -1,14 +1,14 @@
 # Rosa (Robotic Operating System Agent)
 
-Il ROS-Connect Plugin estende il framework [Chetshire AI][https://cheshirecat.ai/], permettendo a un agente AI di interagire autonomamente con un sistema ROS (Robot Operating System).
+Il ROS-Connect Plugin estende il framework [Chetshire AI](https://cheshirecat.ai/), permettendo a un agente AI di interagire autonomamente con un sistema ROS (Robot Operating System).
 
-Ispirato al progetto [ROSA][https://github.com/nasa-jpl/rosa] di NASA-JPL, il plugin adotta un approccio più flessibile e scalabile: grazie all’integrazione con [roslibpy][https://roslibpy.readthedocs.io/en/latest/], un'unica istanza del framework può controllare simultaneamente più sistemi ROS senza richiedere l’installazione locale di ROS. Inoltre, l’agente può analizzare dinamicamente la documentazione del sistema ROS, adattandosi automaticamente alla configurazione del robot senza necessità di codice personalizzato.
+Ispirato al progetto [ROSA](https://github.com/nasa-jpl/rosa) di NASA-JPL, il plugin adotta un approccio più flessibile e scalabile: grazie all’integrazione con [roslibpy](https://roslibpy.readthedocs.io/en/latest/), un'unica istanza del framework può controllare simultaneamente più sistemi ROS senza richiedere l’installazione locale di ROS. Inoltre, l’agente può analizzare dinamicamente la documentazione del sistema ROS, adattandosi automaticamente alla configurazione del robot senza necessità di codice personalizzato.
 
 Grazie all’ecosistema di Chetshire AI, l’interazione può essere estesa con interfacce utente personalizzabili e supporto per diversi modelli LLM, rendendo il controllo dell'agente più flessibile e adattabile a diversi scenari.
 
 ## Caratteristiche
 
-- **Connessione e comunicazione con ROS**: Il plugin stabilisce una connessione al sistema ROS mediante [roslibpy][https://roslibpy.readthedocs.io/en/latest/], permettendo l’invio e la ricezione di messaggi sui topic ROS senza necessità di una configurazione ROS completa sul client.
+- **Connessione e comunicazione con ROS**: Il plugin stabilisce una connessione al sistema ROS mediante [roslibpy](https://roslibpy.readthedocs.io/en/latest/), permettendo l’invio e la ricezione di messaggi sui topic ROS senza necessità di una configurazione ROS completa sul client.
 
 - **Interfacciamento con Cheshire Cat AI**: Grazie all’integrazione con il framework, il plugin può essere utilizzato in combinazione con i widget e le librerie client messi a disposizione (consulta la sezione Client Libraries per maggiori dettagli).
 
