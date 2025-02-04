@@ -16,6 +16,6 @@ Grazie all’ecosistema di Chetshire AI, l’interazione può essere estesa con 
 
 - 🧠 **Flessibilità nell’utilizzo dei modelli LLM**: Supporta diverse modalità di interazione con modelli di linguaggio, consentendo l’utilizzo di API esterne o di implementazioni locali tramite OLLAMA ([more info](https://cheshire-cat-ai.github.io/docs/production/administrators/docker-compose/#cat-ollama)).
 
-- ⚙️ **Configurazione automatica del sistema ROS target**: L’agente AI analizza la documentazione del sistema ROS tramite Retrieval-Augmented Generation (RAG), identificando automaticamente i topic e la formattazione dei messaggi necessari per eseguire il task richiesto. In questo modo, l’agente si adatta a diversi robot senza la necessità di modifiche manuali o codice personalizzato.
+- ⚙️ **Configurazione automatica del sistema ROS target**: L’agente AI utilizza Retrieval-Augmented Generation (RAG) per analizzare la documentazione ROS, identificando topic e formati dei messaggi in modo automatico. Questo gli permette di adattarsi a diversi robot senza bisogno di modifiche manuali o codice personalizzato.
 
 - 👀 **Supporto multimodale**: Una funzionalità **in sviluppo** che prevede la gestione di input provenienti da diverse fonti (audio, video, testo) per arricchire la comunicazione con l’agente AI.
