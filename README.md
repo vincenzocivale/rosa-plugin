@@ -1,26 +1,20 @@
 # Rosa (Robotic Operating System Agent)
 
-[![awesome plugin](https://custom-icon-badges.demolab.com/static/v1?label=&message=awesome+plugin&color=383938&style=for-the-badge&logo=cheshire_cat_ai)](https://)  
-[![Awesome plugin](https://custom-icon-badges.demolab.com/static/v1?label=&message=Awesome+plugin&color=000000&style=for-the-badge&logo=cheshire_cat_ai)](https://)  
-[![awesome plugin](https://custom-icon-badges.demolab.com/static/v1?label=&message=awesome+plugin&color=F4F4F5&style=for-the-badge&logo=cheshire_cat_black)](https://)
+Il ROS-Connect Plugin estende il framework [Chetshire AI][https://cheshirecat.ai/], permettendo a un agente AI di interagire autonomamente con un sistema ROS (Robot Operating System).
 
-Write here all the useful information about your plugin.
+Ispirato al progetto [ROSA][https://github.com/nasa-jpl/rosa] di NASA-JPL, il plugin adotta un approccio più flessibile e scalabile: grazie all’integrazione con [roslibpy][https://roslibpy.readthedocs.io/en/latest/], un'unica istanza del framework può controllare simultaneamente più sistemi ROS senza richiedere l’installazione locale di ROS. Inoltre, l’agente può analizzare dinamicamente la documentazione del sistema ROS, adattandosi automaticamente alla configurazione del robot senza necessità di codice personalizzato.
 
-This repository is the template to automate the release of official Cheshire Cat AI plugins. 
+Grazie all’ecosistema di Chetshire AI, l’interazione può essere estesa con interfacce utente personalizzabili e supporto per diversi modelli LLM, rendendo il controllo dell'agente più flessibile e adattabile a diversi scenari.
 
-## Usage
+## Caratteristiche
 
-1. Create a new repository clicking on the `Use this template` button.
-2. Clone your new repo directly in the Cat's `plugins` folder.
-3. Run the `setup.py` script:
-```bash
-python setup.py
-```
-The script will prompt you to write the name of your plugin and make an initial setup setting the name in the files.
+- **Connessione e comunicazione con ROS**: Il plugin stabilisce una connessione al sistema ROS mediante [roslibpy][https://roslibpy.readthedocs.io/en/latest/], permettendo l’invio e la ricezione di messaggi sui topic ROS senza necessità di una configurazione ROS completa sul client.
 
-4. Start developing!
+- **Interfacciamento con Cheshire Cat AI**: Grazie all’integrazione con il framework, il plugin può essere utilizzato in combinazione con i widget e le librerie client messi a disposizione (consulta la sezione Client Libraries per maggiori dettagli).
 
-> **Important**
-> A new release of your plugin is triggered every time you set a new `version` in the `plugin.json` file.
-> Please, remember to set it correctly every time you want to release an update.
+- **Flessibilità nell’utilizzo dei modelli LLM**: Supporta diverse modalità di interazione con modelli di linguaggio, consentendo l’utilizzo di API esterne o di implementazioni locali tramite OLLAMA (vedi Configurazione Docker Compose ).
+
+- **Configurazione automatica del sistema ROS target**:  L’agente AI analizza la documentazione del sistema ROS tramite Retrieval-Augmented Generation (RAG), identificando automaticamente i topic e la formattazione dei messaggi necessari per eseguire il task richiesto. In questo modo, l’agente si adatta a diversi robot senza la necessità di modifiche manuali o codice personalizzato.
+
+- **Supporto multimodale** : Una funzionalità **in sviluppo** che prevede la gestione di input provenienti da diverse fonti (audio, video, testo) per arricchire la comunicazione con l’agente AI.
 
